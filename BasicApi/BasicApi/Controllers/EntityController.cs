@@ -10,9 +10,17 @@ namespace BasicApi.Controllers
     public class EntityController : ApiController
     {
         // GET: api/Default
-        public IEnumerable<string> Get()
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
+        public string[] Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[]
+            {
+             "Hello",
+             "World"
+            };
         }
 
         // GET: api/Default/5
