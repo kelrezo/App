@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace BasicApi.Controllers
+namespace BasicApi
 {
     public class EntityController : ApiController
     {
@@ -14,6 +14,8 @@ namespace BasicApi.Controllers
         //{
         //    return new string[] { "value1", "value2" };
         //}
+        
+        [HttpGet]
         public string[] Get()
         {
             return new string[]

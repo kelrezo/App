@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-namespace BasicApi.Models
+using System.Runtime.Serialization;
+namespace BasicApi
 {
-    [Serializable]
+ 
     public class Entity
     {
+
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Dead { get; set; }
