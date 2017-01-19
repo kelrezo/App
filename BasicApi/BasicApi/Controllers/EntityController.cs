@@ -15,7 +15,7 @@ namespace BasicApi
         //    return new string[] { "value1", "value2" };
         //}
         
-        [HttpGet]
+        [HttpGet,Route("test")]
         public string[] Get()
         {
             return new string[]
