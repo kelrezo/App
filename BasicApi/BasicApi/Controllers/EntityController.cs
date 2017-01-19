@@ -20,15 +20,21 @@ namespace BasicApi
         {
             return new string[]
             {
-             "Hello",
+             "Hello?",
              "World"
             };
         }
 
         // GET: api/Default/5
-        public string Get(int id)
+        [HttpGet, Route("test2")]
+        public Entity Get2()
         {
-            return "value";
+            return new Entity
+            {
+                Id = 1,
+                Name = "travis",
+                Dead = true
+            };
         }
 
         // POST: api/Default

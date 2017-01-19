@@ -85,6 +85,5 @@ C:\Users\travis.layne\Desktop\App\BasicApi\BasicApi\bin\Newtonsoft.Json.xml
 C:\Users\travis.layne\Desktop\App\BasicApi\BasicApi\bin\System.Net.Http.Formatting.xml
 C:\Users\travis.layne\Desktop\App\BasicApi\BasicApi\bin\System.Web.Http.xml
 C:\Users\travis.layne\Desktop\App\BasicApi\BasicApi\bin\System.Web.Http.WebHost.xml
-C:\Users\travis.layne\Desktop\App\BasicApi\BasicApi\obj\Debug\BasicApi.csprojResolveAssemblyReference.cache
 C:\Users\travis.layne\Desktop\App\BasicApi\BasicApi\obj\Debug\BasicApi.dll
 C:\Users\travis.layne\Desktop\App\BasicApi\BasicApi\obj\Debug\BasicApi.pdb
