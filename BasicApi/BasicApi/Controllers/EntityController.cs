@@ -23,13 +23,6 @@ namespace BasicApi
             response.Content = new StringContent("<html><body>Hello World</body></html>");
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
             return response;
-            // return "<html><body>Hello word</body><html/>";
-            // return new string[]
-            // {
-            //  "Hello?",
-            //  "World"
-
-            //};
         }
 
         // GET: api/Default/5
@@ -45,18 +38,25 @@ namespace BasicApi
         }
 
         // POST: api/Default
-        public void Post([FromBody]string value)
+        [HttpPost,Route("test2")]
+        public HttpResponseMessage Post([FromBody]Entity value)
         {
+            var response = Request.CreateResponse<Entity>(System.Net.HttpStatusCode.Created,value);
+
+            return response;
+           
         }
 
         // PUT: api/Default/5
         public void Put(int id, [FromBody]string value)
         {
+
         }
 
         // DELETE: api/Default/5
         public void Delete(int id)
         {
+
         }
     }
 }
