@@ -6,10 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Http;
 
 namespace BasicApi.Controllers
 {
+    [RoutePrefix("app")]
     public class EntityController : ApiController
     {
 
@@ -22,6 +24,7 @@ namespace BasicApi.Controllers
             this.EntityRepository = new EntityRepository();
         }
 
+        
         [HttpGet, Route("")]
         public HttpResponseMessage Get()
         {
@@ -57,17 +60,22 @@ namespace BasicApi.Controllers
             return response;
            
         }
-
+        
+        
         // PUT: api/Default/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut,Route("test")]
+        public string Put([FromBody]Entity value)
         {
-
+            return EntityRepository.SaveContact(value) ? "Entity Added Successfully":"Error Occured And Entity Was Not Added";
         }
 
         // DELETE: api/Default/5
-        public void Delete(int id)
+        [HttpDelete, Route("test")]
+        public string Delete()
         {
-
+            HttpContext httpContext = HttpContext.Current;
+            var headerList = httpContext.Request.Headers["Id"];
+            return EntityRepository.RemoveEntity(int.Parse(headerList)) ? "Successfully Deleted Entity" : "Error Deleting Entity";
         }
     }
 }
