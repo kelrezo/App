@@ -8,7 +8,7 @@ namespace BasicApi.Services
 {
     public class TimeCardRepository
     {
-        private const string CacheKey = "TimeStore";
+        private const string CacheKey = "TimeCardStorage";
         public TimeCardRepository()
         {
 
@@ -19,23 +19,19 @@ namespace BasicApi.Services
                 if (ctx.Cache[CacheKey] == null)
                 {
                     var TimeCards = new TimeCard[]
-                    {
-
-                    };
+                    { };
                     ctx.Cache[CacheKey] = TimeCards;
                 }
             }
         }
 
-        public void AddTimeCard(string id,float hours)
+        public void AddTimeCard(TimeCard time)
         {
             var ctx = HttpContext.Current;
             TimeCard card = new TimeCard();
             var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();
-            card.Id = id;
-            card.Hours = hours;
-            card.Date = DateTime.Now;
             currentData.Add(card);
+            ctx.Cache[CacheKey] = currentData.ToArray();
         }
         public TimeCard[] GetTimeCards()
         {

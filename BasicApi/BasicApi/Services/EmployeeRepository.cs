@@ -8,7 +8,7 @@ namespace BasicApi.Services
 {
     public class EmployeeRepository
     {
-        private const string CacheKey = "EntityStore";
+        private const string CacheKey = "EntityStorage";
         public EmployeeRepository()
         {
             
@@ -19,9 +19,7 @@ namespace BasicApi.Services
                 if (ctx.Cache[CacheKey] == null)
                 {
                     var Employees = new Employee[]
-                    {
-                      
-                    };
+                    {};
                     ctx.Cache[CacheKey] = Employees;                  
                 }
             }
