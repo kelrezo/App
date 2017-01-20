@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BasicApi.Models;
+using BasicApi.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -6,17 +8,21 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
 
-namespace BasicApi
+namespace BasicApi.Controllers
 {
     public class EntityController : ApiController
     {
-        // GET: api/Default
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
 
-        [HttpGet,Route("")]
+        //implement path param
+        //implement header param
+        private EntityRepository EntityRepository;
+     
+        public EntityController()
+        {
+            this.EntityRepository = new EntityRepository();
+        }
+
+        [HttpGet, Route("")]
         public HttpResponseMessage Get()
         {
             var response = new HttpResponseMessage();
@@ -25,6 +31,11 @@ namespace BasicApi
             return response;
         }
 
+        [HttpGet, Route("test3")]
+        public Entity[] get()
+        {
+            return this.EntityRepository.GetAllEntities();
+        }
         // GET: api/Default/5
         [HttpGet, Route("test2")]
         public Entity Get2()
