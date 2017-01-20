@@ -6,52 +6,55 @@ using BasicApi.Models;
 
 namespace BasicApi.Services
 {
-    public class EntityRepository
+    public class EmployeeRepository
     {
         private const string CacheKey = "EntityStore";
-        private int count;
-        public EntityRepository()
+        int autoIncrement = 0;
+        public EmployeeRepository()
         {
+            
             var ctx = HttpContext.Current;
 
             if (ctx != null)
             {
                 if (ctx.Cache[CacheKey] == null)
                 {
-                    var contacts = new Entity[]
+                    var Employees = new Employee[]
                     {
-                        new Entity
+                        new Employee
                         {
                             Id = 1, Name = "Glenn Block"
                         },
-                        new Entity
+                        new Employee
                         {
                             Id = 2, Name = "Dan Roth"
                         }
                     };
-                    ctx.Cache[CacheKey] = contacts;
+                    autoIncrement += 2;
+                    ctx.Cache[CacheKey] = Employees;
+                    
                 }
             }
         }
-        public Entity[] GetAllEntities()
+        public Employee[] GetAllEmployees()
         {
             var ctx = HttpContext.Current;
 
             if (ctx != null)
             {
-                return (Entity[])ctx.Cache[CacheKey];
+                return (Employee[])ctx.Cache[CacheKey];
             }
 
-            return new Entity[]
+            return new Employee[]
             {
-                new Entity
+                new Employee
                 {
                     Id = 0,
                     Name = "Placeholder"
                 }
             };
         }
-        public bool SaveContact(Entity entity)
+        public bool AddEmployee(Employee person)
         {
             var ctx = HttpContext.Current;
 
@@ -59,11 +62,11 @@ namespace BasicApi.Services
             {
                 try
                 {
-                    var currentData = ((Entity[])ctx.Cache[CacheKey]).ToList();
-                    entity.Id = currentData.Count+1;
-                    currentData.Add(entity);
+                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
+                    this.autoIncrement++;
+                    person.Id = this.autoIncrement;
+                    currentData.Add(person);
                     ctx.Cache[CacheKey] = currentData.ToArray();
-
                     return true;
                 }
                 catch (Exception ex)
@@ -72,20 +75,19 @@ namespace BasicApi.Services
                     return false;
                 }
             }
-
             return false;
         }
 
-        public bool RemoveEntity(int id)
+        public bool RemoveEmployee(int id)
         {
             var ctx = HttpContext.Current;
             if (ctx != null)
             {
                 try
                 {
-                    var currentData = ((Entity[])ctx.Cache[CacheKey]).ToList();
+                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
                 
-                    Entity obj = currentData.Find(x=> x.Id ==id);
+                    Employee obj = currentData.Find(x=> x.Id ==id);
                     currentData.Remove(obj);
                     ctx.Cache[CacheKey] = currentData.ToArray();
                     return true;                   
@@ -100,17 +102,16 @@ namespace BasicApi.Services
             return false;
 
         }
-        public Entity GetEntity(int id)
+        public Employee GetEmployee(int id)
         {
             var ctx = HttpContext.Current;
-            Entity obj = new Entity();
+            Employee obj = new Employee();
             if (ctx != null)
             {
                 try
                 {
-                    var currentData = ((Entity[])ctx.Cache[CacheKey]).ToList();
+                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
                     obj = currentData.Find(x => x.Id == id);
-
                 }
                 catch (Exception ex)
                 {
@@ -119,6 +120,26 @@ namespace BasicApi.Services
                 }
             }
             return obj;
+        }
+        public void UpdateEmployee(Employee update)
+        {
+            var ctx = HttpContext.Current;
+            if (ctx != null)
+            {
+                try
+                {
+                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
+                    Employee old = currentData.Find(x => x.Id == update.Id);
+                    currentData.Remove(old);
+                    currentData.Add(update);
+                    ctx.Cache[CacheKey] = currentData.ToArray();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+
         }
     }
 }

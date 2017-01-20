@@ -11,66 +11,48 @@ using System.Web.Http;
 
 namespace BasicApi.Controllers
 {
-    [RoutePrefix("app")]
+    [RoutePrefix("employees")]
     public class EntityController : ApiController
     {
-
-        //implement path param
-        //implement header param
-        private EntityRepository EntityRepository;
+        private EmployeeRepository EmployeeRepository;
+        private TimeCardRepository TimecCardRepository;
      
         public EntityController()
         {
-            this.EntityRepository = new EntityRepository();
+            this.EmployeeRepository = new EmployeeRepository();
+            this.TimecCardRepository = new TimeCardRepository();
         }
 
-        
-        [HttpGet, Route("")]
-        public HttpResponseMessage Get()
+        [HttpGet,Route("")]
+        public Employee[] GetAll()
         {
-            var response = new HttpResponseMessage();
-            response.Content = new StringContent("<html><body>Hello World</body></html>");
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
-            return response;
+            return this.EmployeeRepository.GetAllEmployees();
         }
 
-        [HttpGet, Route("test3")]
-        public Entity[] get()
-        {
-            return this.EntityRepository.GetAllEntities();
-        }
-        // GET: api/Default/5
         [HttpGet, Route("{id:int}")]
-        public Entity Get2(int id)
+        public Employee Get(int id)
         {
-            return this.EntityRepository.GetEntity(id);
+            return this.EmployeeRepository.GetEmployee(id);
         }
 
-        // POST: api/Default
-        [HttpPost,Route("test2")]
-        public HttpResponseMessage Post([FromBody]Entity value)
+        [HttpPut, Route("{id:int}")]
+        public void Put(int id,[FromBody]Employee person)
         {
-            var response = Request.CreateResponse<Entity>(System.Net.HttpStatusCode.Created,value);
+            person.Id = id;
+            EmployeeRepository.UpdateEmployee(person);
 
-            return response;
-           
-        }
-        
-        
-        // PUT: api/Default/5
-        [HttpPut,Route("test")]
-        public string Put([FromBody]Entity value)
-        {
-            return EntityRepository.SaveContact(value) ? "Entity Added Successfully":"Error Occured And Entity Was Not Added";
         }
 
-        // DELETE: api/Default/5
-        [HttpDelete, Route("test")]
-        public string Delete()
+        [HttpPost,Route("")]
+        public string Post([FromBody]Employee value)
         {
-            HttpContext httpContext = HttpContext.Current;
-            var headerList = httpContext.Request.Headers["Id"];
-            return this.EntityRepository.RemoveEntity(int.Parse(headerList)) ? "Successfully Deleted Entity" : "Error Deleting Entity";
+            return EmployeeRepository.AddEmployee(value) ? "Employee Added Successfully":"Error Occured And Employee Was Not Added";
+        }
+
+        [HttpDelete, Route("{id:int}")]
+        public string Delete(int id)
+        {
+            return this.EmployeeRepository.RemoveEmployee(id) ? "Successfully Deleted Employee" : "Error Deleting Employee";
         }
     }
 }
