@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace BasicApi
@@ -14,15 +15,21 @@ namespace BasicApi
         //{
         //    return new string[] { "value1", "value2" };
         //}
-        
-        [HttpGet,Route("test")]
-        public string[] Get()
+
+        [HttpGet,Route("")]
+        public HttpResponseMessage Get()
         {
-            return new string[]
-            {
-             "Hello?",
-             "World"
-            };
+            var response = new HttpResponseMessage();
+            response.Content = new StringContent("<html><body>Hello World</body></html>");
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            return response;
+            // return "<html><body>Hello word</body><html/>";
+            // return new string[]
+            // {
+            //  "Hello?",
+            //  "World"
+
+            //};
         }
 
         // GET: api/Default/5
