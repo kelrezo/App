@@ -9,7 +9,6 @@ namespace BasicApi.Services
     public class EmployeeRepository
     {
         private const string CacheKey = "EntityStore";
-        int autoIncrement = 0;
         public EmployeeRepository()
         {
             
@@ -21,18 +20,9 @@ namespace BasicApi.Services
                 {
                     var Employees = new Employee[]
                     {
-                        new Employee
-                        {
-                            Id = 1, Name = "Glenn Block"
-                        },
-                        new Employee
-                        {
-                            Id = 2, Name = "Dan Roth"
-                        }
+                      
                     };
-                    autoIncrement += 2;
-                    ctx.Cache[CacheKey] = Employees;
-                    
+                    ctx.Cache[CacheKey] = Employees;                  
                 }
             }
         }
@@ -49,7 +39,7 @@ namespace BasicApi.Services
             {
                 new Employee
                 {
-                    Id = 0,
+                    Id = "0",
                     Name = "Placeholder"
                 }
             };
@@ -63,8 +53,7 @@ namespace BasicApi.Services
                 try
                 {
                     var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
-                    this.autoIncrement++;
-                    person.Id = this.autoIncrement;
+                    person.Id = Guid.NewGuid().ToString();
                     currentData.Add(person);
                     ctx.Cache[CacheKey] = currentData.ToArray();
                     return true;
@@ -78,7 +67,7 @@ namespace BasicApi.Services
             return false;
         }
 
-        public bool RemoveEmployee(int id)
+        public bool RemoveEmployee(string id)
         {
             var ctx = HttpContext.Current;
             if (ctx != null)
@@ -86,8 +75,8 @@ namespace BasicApi.Services
                 try
                 {
                     var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
-                
-                    Employee obj = currentData.Find(x=> x.Id ==id);
+               
+                    Employee obj = currentData.Find(x=> x.Id==id);
                     currentData.Remove(obj);
                     ctx.Cache[CacheKey] = currentData.ToArray();
                     return true;                   
@@ -102,7 +91,7 @@ namespace BasicApi.Services
             return false;
 
         }
-        public Employee GetEmployee(int id)
+        public Employee GetEmployee(string id)
         {
             var ctx = HttpContext.Current;
             Employee obj = new Employee();

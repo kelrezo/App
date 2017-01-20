@@ -29,14 +29,15 @@ namespace BasicApi.Controllers
             return this.EmployeeRepository.GetAllEmployees();
         }
 
-        [HttpGet, Route("{id:int}")]
-        public Employee Get(int id)
+        [HttpGet, Route("{id}")]
+        public Employee Get(string id)
         {
+            
             return this.EmployeeRepository.GetEmployee(id);
         }
 
-        [HttpPut, Route("{id:int}")]
-        public void Put(int id,[FromBody]Employee person)
+        [HttpPut, Route("{id}")]
+        public void Put(string id,[FromBody]Employee person)
         {
             person.Id = id;
             EmployeeRepository.UpdateEmployee(person);
@@ -49,10 +50,15 @@ namespace BasicApi.Controllers
             return EmployeeRepository.AddEmployee(value) ? "Employee Added Successfully":"Error Occured And Employee Was Not Added";
         }
 
-        [HttpDelete, Route("{id:int}")]
-        public string Delete(int id)
+        [HttpDelete, Route("{id}")]
+        public string Delete(string id)
         {
             return this.EmployeeRepository.RemoveEmployee(id) ? "Successfully Deleted Employee" : "Error Deleting Employee";
+        }
+        [HttpPost,Route("{id}/time")]
+        public string PostCard()
+        {
+            return "Hi";
         }
     }
 }
