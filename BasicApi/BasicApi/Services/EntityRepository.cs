@@ -100,9 +100,25 @@ namespace BasicApi.Services
             return false;
 
         }
-        public static bool FindEntity(Entity obj, int id)
+        public Entity GetEntity(int id)
         {
-            return obj.Id == id;
+            var ctx = HttpContext.Current;
+            Entity obj = new Entity();
+            if (ctx != null)
+            {
+                try
+                {
+                    var currentData = ((Entity[])ctx.Cache[CacheKey]).ToList();
+                    obj = currentData.Find(x => x.Id == id);
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                  
+                }
+            }
+            return obj;
         }
     }
 }

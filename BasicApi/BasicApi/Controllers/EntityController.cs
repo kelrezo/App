@@ -40,15 +40,10 @@ namespace BasicApi.Controllers
             return this.EntityRepository.GetAllEntities();
         }
         // GET: api/Default/5
-        [HttpGet, Route("test2")]
-        public Entity Get2()
+        [HttpGet, Route("{id:int}")]
+        public Entity Get2(int id)
         {
-            return new Entity
-            {
-                Id = 1,
-                Name = "travis",
-                Dead = true
-            };
+            return this.EntityRepository.GetEntity(id);
         }
 
         // POST: api/Default
@@ -75,7 +70,7 @@ namespace BasicApi.Controllers
         {
             HttpContext httpContext = HttpContext.Current;
             var headerList = httpContext.Request.Headers["Id"];
-            return EntityRepository.RemoveEntity(int.Parse(headerList)) ? "Successfully Deleted Entity" : "Error Deleting Entity";
+            return this.EntityRepository.RemoveEntity(int.Parse(headerList)) ? "Successfully Deleted Entity" : "Error Deleting Entity";
         }
     }
 }
