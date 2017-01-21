@@ -39,7 +39,8 @@ namespace BasicApi.Services
         {
             var ctx = HttpContext.Current;
             var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();
-            return currentData.FindAll(x => x.Id == id).ToArray();
+            currentData = currentData.FindAll(x => x.Id == id);
+            return currentData.OrderBy(x => x.Date).ToArray();
         }
     }
 }
