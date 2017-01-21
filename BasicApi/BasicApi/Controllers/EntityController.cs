@@ -18,12 +18,12 @@ namespace BasicApi.Controllers
     public class EntityController : ApiController
     {
         private EmployeeRepository EmployeeRepository;
-        private TimeCardRepository TimecCardRepository;
+        private TimeCardRepository TimeCardRepository;
      
         public EntityController()
         {
             this.EmployeeRepository = new EmployeeRepository();
-            this.TimecCardRepository = new TimeCardRepository();
+            this.TimeCardRepository = new TimeCardRepository();
         }
 
         [HttpGet,Route("")]
@@ -59,24 +59,34 @@ namespace BasicApi.Controllers
             return this.EmployeeRepository.RemoveEmployee(id) ? "Successfully Deleted Employee" : "Error Deleting Employee";
         }
         [HttpPost,Route("{id}/time")]
-        public TimeCard PostCard([FromBody] TimeCard time,string id)
+        public string PostCard([FromBody] TimeCard time,string id)
         {
-            var ctx = HttpContext.Current;
-            var data = ctx.Request;
-            
-           // var request = data.GetBufferlessInputStream();
-            
-            //request.Read(data.BinaryRead(data.TotalBytes),0,data.TotalBytes);
-            NameValueCollection headerList = ctx.Request.Headers;
-            var authorizationField = headerList.Get("this");
+            //var request = data.GetBufferlessInputStream();
+            //request.Read(data.BinaryRead(data.TotalBytes), 0, data.TotalBytes);
+            //NameValueCollection headerList = ctx.Request.Headers;
+            //var authorizationField = headerList.Get("this");
             //JObject joResponse = JObject.Parse(response);
             //JObject ojObject = (JObject)joResponse["response"];
             //JArray array = (JArray)ojObject["hours"];
             //int id = Convert.ToInt32(array[0].ToString());
-            time.Id = id;
-            time.Date = ctx.Timestamp;
-            TimecCardRepository.AddTimeCard(time);
-            return time;
+            var ctx = HttpContext.Current;
+            var data = ctx.Request;
+            Employee worker = Get(id);
+            if (worker.Active)
+            {
+                time.Id = id;
+                time.Date = ctx.Timestamp;
+                TimeCardRepository.AddTimeCard(time);
+                return "TimeCarded Added";
+            }
+            return "TimeCard Not Added, Worker is not active.";
+        }
+        [HttpGet, Route("{id}/time")]
+        public TimeCard[] GetCard(string id)
+        {
+            var ctx = HttpContext.Current;
+            var data = ctx.Request;    
+            return TimeCardRepository.GetTimeCards(id);
         }
     }
 }
