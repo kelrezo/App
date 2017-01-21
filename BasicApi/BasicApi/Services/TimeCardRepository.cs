@@ -12,7 +12,6 @@ namespace BasicApi.Services
          private const string CacheKeyE = "EntityStorage";
         public TimeCardRepository()
         {
-
             var ctx = HttpContext.Current;
 
             if (ctx != null)
@@ -29,10 +28,8 @@ namespace BasicApi.Services
         public void AddTimeCard(TimeCard time)
         {
             var ctx = HttpContext.Current;
-            TimeCard card = new TimeCard();
             var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();
-            //var currentDataEmployee = ((Employee[])ctx.Cache[CacheKey]).ToList();
-            currentData.Add(card);
+            currentData.Add(time);
             ctx.Cache[CacheKey] = currentData.ToArray();
         }
         public TimeCard[] GetTimeCards(string id)
@@ -41,6 +38,7 @@ namespace BasicApi.Services
             var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();
             currentData = currentData.FindAll(x => x.Id == id);
             return currentData.OrderBy(x => x.Date).ToArray();
+
         }
     }
 }

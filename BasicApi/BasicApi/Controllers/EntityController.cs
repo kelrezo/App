@@ -34,8 +34,7 @@ namespace BasicApi.Controllers
 
         [HttpGet, Route("{id}")]
         public Employee Get(string id)
-        {
-            
+        {           
             return this.EmployeeRepository.GetEmployee(id);
         }
 
@@ -84,8 +83,8 @@ namespace BasicApi.Controllers
         [HttpGet, Route("{id}/time")]
         public TimeCard[] GetCard(string id)
         {
-            var ctx = HttpContext.Current;
-            var data = ctx.Request;    
+            //var ctx = HttpContext.Current;
+            //var data = ctx.Request;    
             return TimeCardRepository.GetTimeCards(id);
         }
     }

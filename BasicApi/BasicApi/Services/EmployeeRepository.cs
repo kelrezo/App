@@ -19,7 +19,15 @@ namespace BasicApi.Services
                 if (ctx.Cache[CacheKey] == null)
                 {
                     var Employees = new Employee[]
-                    {};
+                    {
+                        new Employee
+                        {
+                            Id = "0",
+                            Name = "Placeholder",
+                            Active = true
+                        }
+
+                    };
                     ctx.Cache[CacheKey] = Employees;                  
                 }
             }
@@ -28,19 +36,8 @@ namespace BasicApi.Services
         {
             var ctx = HttpContext.Current;
 
-            if (ctx != null)
-            {
-                return (Employee[])ctx.Cache[CacheKey];
-            }
-
-            return new Employee[]
-            {
-                new Employee
-                {
-                    Id = "0",
-                    Name = "Placeholder"
-                }
-            };
+            return (Employee[])ctx.Cache[CacheKey];
+          
         }
         public bool AddEmployee(Employee person)
         {
