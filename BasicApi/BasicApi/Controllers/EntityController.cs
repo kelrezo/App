@@ -43,7 +43,6 @@ namespace BasicApi.Controllers
         {
             person.Id = id;
             EmployeeRepository.UpdateEmployee(person);
-
         }
 
         [HttpPost,Route("")]
@@ -55,7 +54,8 @@ namespace BasicApi.Controllers
         [HttpDelete, Route("{id}")]
         public string Delete(string id)
         {
-            return this.EmployeeRepository.RemoveEmployee(id) ? "Successfully Deleted Employee" : "Error Deleting Employee";
+            TimeCardRepository.RemoveTimeCards(id);
+            return EmployeeRepository.RemoveEmployee(id) ? "Successfully Deleted Employee" : "Error Deleting Employee";
         }
         [HttpPost,Route("{id}/time")]
         public string PostCard([FromBody] TimeCard time,string id)
@@ -82,10 +82,13 @@ namespace BasicApi.Controllers
         }
         [HttpGet, Route("{id}/time")]
         public TimeCard[] GetCard(string id)
-        {
-            //var ctx = HttpContext.Current;
-            //var data = ctx.Request;    
+        {  
             return TimeCardRepository.GetTimeCards(id);
+        }
+        [HttpGet, Route("time")]
+        public TimeCard[] GetCards()
+        {
+            return TimeCardRepository.GetTimeCards();
         }
     }
 }

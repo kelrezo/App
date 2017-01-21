@@ -9,9 +9,9 @@ namespace BasicApi.Services
     public class EmployeeRepository
     {
         private const string CacheKey = "EntityStorage";
+        private const string CacheKeyT = "TimeCardStorage";
         public EmployeeRepository()
-        {
-            
+        {           
             var ctx = HttpContext.Current;
 
             if (ctx != null)
@@ -61,7 +61,6 @@ namespace BasicApi.Services
             }
             return false;
         }
-
         public bool RemoveEmployee(string id)
         {
             var ctx = HttpContext.Current;
@@ -69,8 +68,7 @@ namespace BasicApi.Services
             {
                 try
                 {
-                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
-               
+                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();                    
                     Employee obj = currentData.Find(x=> x.Id==id);
                     currentData.Remove(obj);
                     ctx.Cache[CacheKey] = currentData.ToArray();
