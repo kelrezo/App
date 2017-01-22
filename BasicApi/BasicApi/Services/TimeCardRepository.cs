@@ -8,47 +8,42 @@ namespace BasicApi.Services
 {
     public class TimeCardRepository
     {
-        private const string CacheKey = "TimeCardStorage";
-        private const string CacheKeyE = "EntityStorage";
+        //private const string CacheKey = "TimeCardStorage";
+        private List<TimeCard> TimeCards {get;}
         public TimeCardRepository()
         {
-            var ctx = HttpContext.Current;
-
-            if (ctx != null)
-            {
-                if (ctx.Cache[CacheKey] == null)
-                {
-                    var TimeCards = new TimeCard[]
-                    { };
-                    ctx.Cache[CacheKey] = TimeCards;
-                }
-            }
+            TimeCards = new List<TimeCard>();       
         }
-
-        public void AddTimeCard(TimeCard time)
+        public TimeCardRepository(TimeCard[] list)
         {
-            var ctx = HttpContext.Current;
-            var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();
-            currentData.Add(time);
-            ctx.Cache[CacheKey] = currentData.ToArray();
+            TimeCards = list.ToList();            
+        }
+        public TimeCard AddTimeCard(TimeCard time)
+        {
+            //var ctx = HttpContext.Current;
+            //var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();
+            //currentData.Add(time);
+            //ctx.Cache[CacheKey] = currentData.ToArray();
+            TimeCards.Add(time);
+            return time;
         }
         public TimeCard[] GetTimeCards(string id = null)
         {
-            var ctx = HttpContext.Current;
-            var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();
+            //var ctx = HttpContext.Current;
+            //var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();
             if (id == null)
-            {
-                return currentData.OrderBy(x => x.Date).ToArray();
-            }        
-            currentData = currentData.FindAll(x => x.Id == id);
+                return TimeCards.OrderBy(x => x.Date).ToArray(); 
+                   
+            var currentData = TimeCards.FindAll(x => x.Id == id);
             return currentData.OrderBy(x => x.Date).ToArray();
         }
         public void RemoveTimeCards(string id)
         {
-            var ctx = HttpContext.Current;
-            var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();       
-            currentData.RemoveAll(x => x.Id == id);
-            ctx.Cache[CacheKey] = currentData.ToArray();
+            //var ctx = HttpContext.Current;
+            //var currentData = ((TimeCard[])ctx.Cache[CacheKey]).ToList();   \
+            //currentData.RemoveAll(x => x.Id == id);
+            //ctx.Cache[CacheKey] = currentData.ToArray();
+            TimeCards.RemoveAll(x => x.Id == id);
         }
     }
 }

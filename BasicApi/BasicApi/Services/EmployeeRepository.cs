@@ -8,120 +8,56 @@ namespace BasicApi.Services
 {
     public class EmployeeRepository
     {
-        private const string CacheKey = "EntityStorage";
-        private const string CacheKeyT = "TimeCardStorage";
+        //private const string CacheKey = "EntityStorage";
+        List<Employee> Employees {get;}
         public EmployeeRepository()
-        {           
-            var ctx = HttpContext.Current;
-
-            if (ctx != null)
-            {
-                if (ctx.Cache[CacheKey] == null)
-                {
-                    var Employees = new Employee[]
-                    {
-                        new Employee
-                        {
-                            Id = "0",
-                            Name = "Placeholder",
-                            Active = true
-                        }
-
-                    };
-                    ctx.Cache[CacheKey] = Employees;                  
-                }
-            }
+        {
+            Employees = new List<Employee>();
+        }
+        public EmployeeRepository(Employee[] list)
+        {
+            Employees = list.ToList();
+                        
         }
         public Employee[] GetAllEmployees()
         {
-            var ctx = HttpContext.Current;
-
-            return (Employee[])ctx.Cache[CacheKey];
-          
+            return Employees.ToArray();        
         }
-        public bool AddEmployee(Employee person)
+        public Employee AddEmployee(Employee person)
         {
-            var ctx = HttpContext.Current;
-
-            if (ctx != null)
-            {
-                try
-                {
-                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
-                    person.Id = Guid.NewGuid().ToString();
-                    currentData.Add(person);
-                    ctx.Cache[CacheKey] = currentData.ToArray();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    return false;
-                }
-            }
-            return false;
+            //var ctx = HttpContext.Current;        
+            //var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
+            //person.Id = Guid.NewGuid().ToString();
+            //currentData.Add(person);
+            //ctx.Cache[CacheKey] = currentData.ToArray();
+            Employees.Add(person);
+            return person;
+            
         }
-        public bool RemoveEmployee(string id)
+        public void RemoveEmployee(string id)
         {
-            var ctx = HttpContext.Current;
-            if (ctx != null)
-            {
-                try
-                {
-                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();                    
-                    Employee obj = currentData.Find(x=> x.Id==id);
-                    currentData.Remove(obj);
-                    ctx.Cache[CacheKey] = currentData.ToArray();
-                    return true;                   
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    return false;
-                    
-                }
-            }
-            return false;
-
+            //var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();                    
+            //Employee obj = currentData.Find(x=> x.Id==id);
+            //currentData.Remove(obj);
+            //ctx.Cache[CacheKey] = currentData.ToArray();
+            var data = Employees.Find(x => x.Id == id);
+            Employees.Remove(data);
         }
         public Employee GetEmployee(string id)
         {
-            var ctx = HttpContext.Current;
-            Employee obj = new Employee();
-            if (ctx != null)
-            {
-                try
-                {
-                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
-                    obj = currentData.Find(x => x.Id == id);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                  
-                }
-            }
+            var obj = Employees.Find(x => x.Id == id);
             return obj;
         }
         public void UpdateEmployee(Employee update)
         {
-            var ctx = HttpContext.Current;
-            if (ctx != null)
-            {
-                try
-                {
-                    var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
-                    Employee old = currentData.Find(x => x.Id == update.Id);
-                    currentData.Remove(old);
-                    currentData.Add(update);
-                    ctx.Cache[CacheKey] = currentData.ToArray();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-            }
-
+            //var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
+            //Employee old = currentData.Find(x => x.Id == update.Id);
+            //currentData.Remove(old);
+            //currentData.Add(update);
+            //ctx.Cache[CacheKey] = currentData.ToArray();
+            Employee old = Employees.Find(x => x.Id == update.Id);
+            Employees.Remove(old);
+            Employees.Add(update);
         }
     }
 }

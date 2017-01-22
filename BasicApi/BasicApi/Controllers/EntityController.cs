@@ -46,19 +46,19 @@ namespace BasicApi.Controllers
         }
 
         [HttpPost,Route("")]
-        public string Post([FromBody]Employee value)
+        public Employee Post([FromBody]Employee value)
         {
-            return EmployeeRepository.AddEmployee(value) ? "Employee Added Successfully":"Error Occured And Employee Was Not Added";
+            return EmployeeRepository.AddEmployee(value);
         }
 
         [HttpDelete, Route("{id}")]
-        public string Delete(string id)
+        public void Delete(string id)
         {
             TimeCardRepository.RemoveTimeCards(id);
-            return EmployeeRepository.RemoveEmployee(id) ? "Successfully Deleted Employee" : "Error Deleting Employee";
+            //return EmployeeRepository.RemoveEmployee(id) ? "Successfully Deleted Employee" : "Error Deleting Employee";
         }
         [HttpPost,Route("{id}/time")]
-        public string PostCard([FromBody] TimeCard time,string id)
+        public TimeCard PostCard([FromBody] TimeCard time,string id)
         {
             //var request = data.GetBufferlessInputStream();
             //request.Read(data.BinaryRead(data.TotalBytes), 0, data.TotalBytes);
@@ -76,9 +76,8 @@ namespace BasicApi.Controllers
                 time.Id = id;
                 time.Date = ctx.Timestamp;
                 TimeCardRepository.AddTimeCard(time);
-                return "TimeCarded Added";
             }
-            return "TimeCard Not Added, Worker is not active.";
+            return time;
         }
         [HttpGet, Route("{id}/time")]
         public TimeCard[] GetCard(string id)
