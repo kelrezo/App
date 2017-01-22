@@ -17,8 +17,8 @@ namespace BasicApi.Controllers
     [RoutePrefix("employees")]
     public class EntityController : ApiController
     {
-        private EmployeeRepository EmployeeRepository;
-        private TimeCardRepository TimeCardRepository;
+        private EmployeeRepository EmployeeRepository { get;}
+        private TimeCardRepository TimeCardRepository{ get; }
      
         public EntityController()
         {
@@ -42,19 +42,19 @@ namespace BasicApi.Controllers
         public void Put(string id,[FromBody]Employee person)
         {
             person.Id = id;
-            EmployeeRepository.UpdateEmployee(person);
+            this.EmployeeRepository.UpdateEmployee(person);
         }
 
         [HttpPost,Route("")]
         public Employee Post([FromBody]Employee value)
         {
-            return EmployeeRepository.AddEmployee(value);
+            return this.EmployeeRepository.AddEmployee(value);
         }
 
         [HttpDelete, Route("{id}")]
         public void Delete(string id)
         {
-            TimeCardRepository.RemoveTimeCards(id);
+            this.TimeCardRepository.RemoveTimeCards(id);
             //return EmployeeRepository.RemoveEmployee(id) ? "Successfully Deleted Employee" : "Error Deleting Employee";
         }
         [HttpPost,Route("{id}/time")]
@@ -75,19 +75,19 @@ namespace BasicApi.Controllers
             {
                 time.Id = id;
                 time.Date = ctx.Timestamp;
-                TimeCardRepository.AddTimeCard(time);
+                this.TimeCardRepository.AddTimeCard(time);
             }
             return time;
         }
         [HttpGet, Route("{id}/time")]
         public TimeCard[] GetCard(string id)
         {  
-            return TimeCardRepository.GetTimeCards(id);
+            return this.TimeCardRepository.GetTimeCards(id);
         }
         [HttpGet, Route("time")]
         public TimeCard[] GetCards()
         {
-            return TimeCardRepository.GetTimeCards();
+            return this.TimeCardRepository.GetTimeCards();
         }
     }
 }

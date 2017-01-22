@@ -18,6 +18,8 @@ namespace BasicApi.Controllers.Tests
         //make mock controller to make mock services
         //use controller functionality and assert the return values
         //might have to edit controller to return entites instead of strings
+        //make repostiorry public?
+
         List<Employee> listE;
         List<TimeCard> listT;
         [TestInitialize()]
