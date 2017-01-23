@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BasicApi.Models;
+using BasicApi.Services;
 
 namespace BasicApi.Controllers.Tests
 {
@@ -25,7 +26,7 @@ namespace BasicApi.Controllers.Tests
         [TestInitialize()]
         public void Startup()
         {
-
+            //initalize the repositories? or jsuti tnmialzie for each testmethod?
         }
         [TestMethod()]
         public void EntityControllerTest()
@@ -36,12 +37,19 @@ namespace BasicApi.Controllers.Tests
         [TestMethod()]
         public void GetAllTest()
         {
+            //intialize repostiroy,then do a method
+            var Employees = GetTestEmployees();
+            var employeeRepository = new EmployeeRepository(Employees.ToArray());
+            Assert.Equals(Employees,employeeRepository.GetAllEmployees());
             Assert.Fail();
         }
 
         [TestMethod()]
         public void GetTest()
         {
+            var controller = new EntityController();
+            var Employees = GetTestEmployees();         
+            Assert.Equals(Employees.Find(x=> x.Id =="1"), controller.Get("1"));
             Assert.Fail();
         }
 
@@ -82,8 +90,11 @@ namespace BasicApi.Controllers.Tests
         }
         private List<Employee> GetTestEmployees()
         {
-            var testProducts = new List<Employee>();
-            return testProducts;
+            var testEmployees = new List<Employee>();
+            testEmployees.Add(new Employee {Id="1",Name="Travis",Active=true });
+            testEmployees.Add(new Employee {Id="2",Name="Travis",Active=true});
+            testEmployees.Add(new Employee {Id="3",Active=false});
+            return testEmployees;
         }
         private List<TimeCard> GetTimeCards()
         {

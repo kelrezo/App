@@ -32,7 +32,7 @@ namespace BasicApi.Services
         public Employee[] GetAllEmployees()
         {
             var ctx = HttpContext.Current;
-            return ((Employee[])ctx.Cache[CacheKey]).ToArray();
+            return ctx!=null ? ((Employee[])ctx.Cache[CacheKey]).ToArray() : this.Employees.ToArray();
         }
 
         public Employee AddEmployee(Employee person)
