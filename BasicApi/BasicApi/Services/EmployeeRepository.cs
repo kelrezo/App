@@ -9,7 +9,7 @@ namespace BasicApi.Services
     public class EmployeeRepository
     {
         private const string CacheKey = "EntityStorage";
-        List<Employee> Employees {get;}
+        List<Employee> Employees { get; set; }
         public EmployeeRepository()
         {
             var ctx = HttpContext.Current;
@@ -19,15 +19,15 @@ namespace BasicApi.Services
                 if (ctx.Cache[CacheKey] == null)
                 {
                     var contacts = new Employee[]{};
-
                     ctx.Cache[CacheKey] = contacts;
                 }
             }
         }
         public EmployeeRepository(Employee[] list)
         {
-            this.Employees = list.ToList();
-                        
+            var ctx = HttpContext.Current;
+            ctx.Cache[CacheKey] = list;
+
         }
         public Employee[] GetAllEmployees()
         {
@@ -42,19 +42,20 @@ namespace BasicApi.Services
             person.Id = Guid.NewGuid().ToString();
             currentData.Add(person);
             ctx.Cache[CacheKey] = currentData.ToArray();
-            //this.Employees.Add(person);
-            return person;
-            
+            return person;           
         }
         public void RemoveEmployee(string id)
         {
             var ctx = HttpContext.Current;
-            var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
-            Employee obj = currentData.Find(x => x.Id == id);
-            currentData.Remove(obj);
-            ctx.Cache[CacheKey] = currentData.ToArray();
-            var data = Employees.Find(x => x.Id == id);
-            //this.Employees.Remove(data);
+            if (ctx != null)
+            {
+                var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
+                Employee obj = currentData.Find(x => x.Id == id);
+                currentData.Remove(obj);
+                ctx.Cache[CacheKey] = currentData.ToArray();
+                this.Employees = currentData.ToList();
+                return;
+            }
         }
         public Employee GetEmployee(string id)
         {
@@ -71,9 +72,6 @@ namespace BasicApi.Services
             currentData.Remove(old);
             currentData.Add(update);
             ctx.Cache[CacheKey] = currentData.ToArray();
-            old = Employees.Find(x => x.Id == update.Id);
-            //this.Employees.Remove(old);
-            //this.Employees.Add(update);
         }
     }
 }

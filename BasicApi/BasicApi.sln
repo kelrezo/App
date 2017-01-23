@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicApi", "BasicApi\BasicApi.csproj", "{1D74407D-62CB-48E5-8A17-B59483C92372}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicApiTests", "BasicApiTests\BasicApiTests.csproj", "{7218AF5E-06DF-454B-A9BF-0C7E50B9AD71}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{1D74407D-62CB-48E5-8A17-B59483C92372}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D74407D-62CB-48E5-8A17-B59483C92372}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D74407D-62CB-48E5-8A17-B59483C92372}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7218AF5E-06DF-454B-A9BF-0C7E50B9AD71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7218AF5E-06DF-454B-A9BF-0C7E50B9AD71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7218AF5E-06DF-454B-A9BF-0C7E50B9AD71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7218AF5E-06DF-454B-A9BF-0C7E50B9AD71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

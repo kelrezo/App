@@ -22,7 +22,8 @@ namespace BasicApi.Controllers.Tests
         //make repostiorry public?
 
         List<Employee> listE;
-        List<TimeCard> listT;
+        List<TimeCard> listT;'
+        static readonly Random rnd = new Random();
         [TestInitialize()]
         public void Startup()
         {
@@ -35,17 +36,21 @@ namespace BasicApi.Controllers.Tests
         }
 
         [TestMethod()]
-        public void GetAllTest()
+        public void Should_GetAllEmployees()
         {
             //intialize repostiroy,then do a method
+          
             var Employees = GetTestEmployees();
+            var TimeCards = GetTestTimeCards();
             var employeeRepository = new EmployeeRepository(Employees.ToArray());
+            var timecardRepository = new TimeCardRepository(TimeCards.ToArray());
+            var controller = new EntityController(employeeRepository,timecardRepository);
             Assert.Equals(Employees,employeeRepository.GetAllEmployees());
             Assert.Fail();
         }
 
         [TestMethod()]
-        public void GetTest()
+        public void Should_GetAnemployee()
         {
             var Employees = GetTestEmployees();
             var employeeRepository = new EmployeeRepository(Employees.ToArray());
@@ -93,13 +98,24 @@ namespace BasicApi.Controllers.Tests
             var testEmployees = new List<Employee>();
             testEmployees.Add(new Employee {Id="1",Name="Travis",Active=true });
             testEmployees.Add(new Employee {Id="2",Name="Travis",Active=true});
-            testEmployees.Add(new Employee {Id="3",Active=false});
+            testEmployees.Add(new Employee {Id="3",Name="John",Active=false});
             return testEmployees;
         }
-        private List<TimeCard> GetTimeCards()
+        private List<TimeCard> GetTestTimeCards()
         {
-            var testProducts = new List<TimeCard>();
-            return testProducts;
+            var testTimeCards = new List<TimeCard>();
+            testTimeCards.Add(new TimeCard { Id = "1", Hours = 3.5f, Date = GetRandomDate(new DateTime(2016, 5, 1), new DateTime(2016, 9, 1)) });
+            testTimeCards.Add(new TimeCard { Id = "1", Hours = 0.5f, Date = GetRandomDate(new DateTime(2016, 5, 1), new DateTime(2016, 9, 1)) });
+            testTimeCards.Add(new TimeCard { Id = "2", Hours = 4f, Date = GetRandomDate(new DateTime(2016, 5, 1), new DateTime(2016, 9, 1)) });
+            return testTimeCards;
+        }
+        public static DateTime GetRandomDate(DateTime from, DateTime to)
+        {
+            var range = to - from;
+
+            var randTimeSpan = new TimeSpan((long)(rnd.NextDouble() * range.Ticks));
+
+            return from + randTimeSpan;
         }
     }
 }

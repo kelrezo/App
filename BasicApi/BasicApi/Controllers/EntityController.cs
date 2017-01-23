@@ -19,13 +19,16 @@ namespace BasicApi.Controllers
     {
         private EmployeeRepository EmployeeRepository { get;}
         private TimeCardRepository TimeCardRepository{ get; }
-     
         public EntityController()
         {
             this.EmployeeRepository = new EmployeeRepository();
             this.TimeCardRepository = new TimeCardRepository();
         }
-
+        public EntityController(EmployeeRepository RepositoryE,TimeCardRepository RepositoryT)
+        {
+            this.EmployeeRepository = RepositoryE;
+            this.TimeCardRepository = RepositoryT;
+        }
         [HttpGet,Route("")]
         public Employee[] GetAll()
         {
@@ -55,19 +58,11 @@ namespace BasicApi.Controllers
         public void Delete(string id)
         {
             this.TimeCardRepository.RemoveTimeCards(id);
-            //return EmployeeRepository.RemoveEmployee(id) ? "Successfully Deleted Employee" : "Error Deleting Employee";
+            this.EmployeeRepository.RemoveEmployee(id);
         }
         [HttpPost,Route("{id}/time")]
         public TimeCard PostCard([FromBody] TimeCard time,string id)
         {
-            //var request = data.GetBufferlessInputStream();
-            //request.Read(data.BinaryRead(data.TotalBytes), 0, data.TotalBytes);
-            //NameValueCollection headerList = ctx.Request.Headers;
-            //var authorizationField = headerList.Get("this");
-            //JObject joResponse = JObject.Parse(response);
-            //JObject ojObject = (JObject)joResponse["response"];
-            //JArray array = (JArray)ojObject["hours"];
-            //int id = Convert.ToInt32(array[0].ToString());
             var ctx = HttpContext.Current;
             var data = ctx.Request;
             Employee worker = Get(id);
@@ -76,7 +71,7 @@ namespace BasicApi.Controllers
                 time.Id = id;
                 time.Date = ctx.Timestamp;
                 this.TimeCardRepository.AddTimeCard(time);
-            }
+            } 
             return time;
         }
         [HttpGet, Route("{id}/time")]
