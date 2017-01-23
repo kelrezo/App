@@ -32,7 +32,7 @@ namespace BasicApi.Services
         public Employee[] GetAllEmployees()
         {
             var ctx = HttpContext.Current;
-            return ctx!=null ? ((Employee[])ctx.Cache[CacheKey]).ToArray() : this.Employees.ToArray();
+            return  ((Employee[])ctx.Cache[CacheKey]).ToArray();
         }
 
         public Employee AddEmployee(Employee person)
@@ -53,7 +53,7 @@ namespace BasicApi.Services
                 Employee obj = currentData.Find(x => x.Id == id);
                 currentData.Remove(obj);
                 ctx.Cache[CacheKey] = currentData.ToArray();
-                this.Employees = currentData.ToList();
+
                 return;
             }
         }
@@ -61,7 +61,6 @@ namespace BasicApi.Services
         {
             var ctx = HttpContext.Current;
             var currentData = ((Employee[])ctx.Cache[CacheKey]).ToList();
-            var obj = Employees.Find(x => x.Id == id);
             return currentData.Find(x => x.Id == id);
         }
         public void UpdateEmployee(Employee update)
