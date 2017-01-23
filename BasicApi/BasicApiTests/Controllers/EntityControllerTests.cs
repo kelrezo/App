@@ -47,9 +47,9 @@ namespace BasicApi.Controllers.Tests
         [TestMethod()]
         public void GetTest()
         {
-            var controller = new EntityController();
-            var Employees = GetTestEmployees();         
-            Assert.Equals(Employees.Find(x=> x.Id =="1"), controller.Get("1"));
+            var Employees = GetTestEmployees();
+            var employeeRepository = new EmployeeRepository(Employees.ToArray());
+            Assert.Equals(Employees.Find(x=> x.Id =="1"), employeeRepository.GetEmployee("1"));
             Assert.Fail();
         }
 
